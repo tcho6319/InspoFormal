@@ -1,4 +1,4 @@
-# Project 2
+# Project 3
 
 See the course website for Project 3's requirements: [Project 3](https://github.coecis.cornell.edu/info2300-sp2019/info2300-sp2019-website/blob/master/assignments/project-3/project-3.md) ([PDF](https://github.coecis.cornell.edu/info2300-sp2019/info2300-sp2019-website/blob/master/assignments/project-3/project-3.pdf)).
 
