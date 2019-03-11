@@ -1,0 +1,11 @@
+{
+    "explorer.openEditors.visible": 0,
+    "editor.minimap.enabled": false,
+    "editor.wordWrap": "on",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "workbench.enableExperiments": false,
+    "workbench.statusBar.feedback.visible": false,
+    "phpserver.browser": "firefox"
+}
