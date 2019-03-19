@@ -124,25 +124,49 @@ Add new tag in add new image form or to pre-existing image:
   - Else:
     - Echo that tag already exists
 
-
+User-def function to render images with query string parameters from a list of image ids.
 
 
 ## Database Query Plan
 
 [Plan your database queries. You may use natural language, pseudocode, or SQL.]
 
-Users should be able to view all images in your photo gallery at once.
+1. Users should be able to view all images in your photo gallery at once.
+
 ```sql
-    SELECT images.first_name, students.last_name, majors.major FROM students LEFT OUTER JOIN majors ON majors.id = students.major_id;
+    SELECT images.id FROM images;
 ```
-Users should be able to view all images for a tag at once.
-Users should be able to view a single image and all the tags for that image at once.
-Users should be able to upload a new image.
-Users should be able to remove (delete) an image.
+2. Users should be able to view all images for a tag at once.
+```sql
+    SELECT images.id FROM images INNER JOIN image_tags on images.id = image_tags.image_id INNER JOIN tags on tags.id = image_tags.tag_id WHERE tags.tag = "<tag input>";
+```
+3. Users should be able to view a single image and all the tags for that image at once.
+```sql
+    SELECT images.id, tags.tag FROM images INNER JOIN image_tags on images.id = image_tags.image_id INNER JOIN tags on tags.id = image_tags.tag_id WHERE images.id = "<image id>";
+```
+4. Users should be able to upload a new image.
+```sql
+INSERT INTO images (id,user_id)
+VALUES (<id>, <user_id>);
+```
+If new tags
+```sql
+INSERT INTO tags (id,tag)
+VALUES (<id>, "<tag input");
+```
+
+5. Users should be able to remove (delete) an image.
+
 Make sure you clean up any relationships to the image in other tables. (Where the image is a foreign key.)
 Make sure you delete the corresponding file upload from disk.
-Users should be able to view all tags at once.
-Users should be able to add an existing tag to an image, add a new tag to an image, and remove a tag from an image.
+
+6. Users should be able to view all tags at once.
+
+7. Users should be able to add an existing tag to an image
+
+8. Add a new tag to an image
+
+9. Remove a tag from an image.
 
 # Project 3, Milestone 2 - Gallery and User Access Controls
 
