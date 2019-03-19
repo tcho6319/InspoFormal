@@ -63,7 +63,7 @@ I will use a template for my header and my footer.
 
 Table: users
 * id: type - INTEGER, constraints - PK, U, Not, AI
-* session_id: type - TEXT, constraints - U
+* session_id: type - INTEGER, constraints - U, AI
 * password: type - TEXT, constraints - Not
 
 Table: images
@@ -155,18 +155,30 @@ INSERT INTO tags (id,tag)
 VALUES (<id>, "<tag input");
 ```
 
-5. Users should be able to remove (delete) an image.
+- Update image_tags table
 
+5. Users should be able to remove (delete) an image.
 Make sure you clean up any relationships to the image in other tables. (Where the image is a foreign key.)
 Make sure you delete the corresponding file upload from disk.
 
+- Remove image from images
+- Update image_tags table
+
 6. Users should be able to view all tags at once.
+```sql
+SELECT tags.tag FROM tags;
+```
 
 7. Users should be able to add an existing tag to an image
+- Update image_tags
+
 
 8. Add a new tag to an image
+- Add new tag to tags
+- Update image_tags
 
 9. Remove a tag from an image.
+- Update image_tags
 
 # Project 3, Milestone 2 - Gallery and User Access Controls
 
