@@ -1,6 +1,6 @@
 # Project 3: Design Journey
 
-Your Name: [insert your name here]
+Your Name: Theresa Cho
 
 **All images must be visible in Markdown Preview. No credit will be provided for images in your repository that are not properly linked in Markdown. Assume all file paths are case sensitive!**
 
@@ -10,29 +10,48 @@ Your Name: [insert your name here]
 ## Describe your Gallery
 
 [What will your gallery be about? 1 sentence.]
-
+My gallery will be about fashion, makeup, venue, and decorations for mainly two formal events: Proms and Weddings.
 
 ## Target Audiences
 
 [Tell us about your target two audiences. ~1-3 sentences per audience]
+Persona 1: Alex
+- High school senior who is very excited about prom
+- Trendy & Fashionista --> wants to know what the trendiest dress to wear would be, fashion inspiration
+- Is mainly concerned with fashion and makeup for prom
+- Appreciates good aesthetics
 
+Persona 2: Betty
+- Recently engaged and preparing for the wedding
+- Wants ideas about fashion, makeup, venue, and decorations for the formal occassion
+- May/may not be working with a wedding planner
+- Crafty, DIY person who wants to have their touch in every aspect of their wedding planning
+- Loves to share any wedding ideas with other people who are preparing for their wedding
 
 ## Design Process
 
 [Document your design process. Show us the evolution of your design from your first idea (sketch) to design you wish to implement (sketch). Show us the process you used to organize content and plan the navigation (e.g. card sorting).]
 
 [Label all images. All labels must be visible in Markdown Preview.]
+Note about card sorting: I did not really need cardsorting since most of my content would be on 1 page.
+
+Sketch version 1 - Initially, I thought of creating a separate page that would list all the tags (similar to a directory):
+![sketchV1](sketchV1.jpg)
+
+Sketch version 2 - But I thought that having a separate "All Tags" page would be inconvenient for both my target audiences who may want to look at corresponding images for multiple tags at once. Therefore, I decided to have a very simple search form where the user could multiple select tags and the images would change accordingly; this eliminated the need for the second page. I also added to my "Add Image" section where the user could add new tags to the image they are uploading. Furthermore, in order to allow the user to see all the tags/edit the tags of a specific image, I decided to create a separate page with just the image they selected in the gallery.
+![sketchV2](sketchV2.jpg)
 
 
 ## Final Design Plan
 
 [Include sketches of your final design here.]
-
+My sketch version 2 is my final design.
+![sketchV2](sketchV2.jpg)
 
 ## Templates
 
 [Identify the templates you will use on your site.]
-
+I will use a template for my header and my footer.
 
 ## Database Schema Design
 
@@ -42,45 +61,88 @@ Your Name: [insert your name here]
 
 [Hint: For foreign keys, use the singular name of the table + _id. For example: 1) `user_id` in the `images` table or 2) `image_id` and `tag_id` for the `image_tags` table.]
 
-```
-movies (
-id : INTEGER {PK, U, Not, AI} -- surrogate primary key
-field2 : ...
-...
-)
-```
+Table: users
+* id: type - INTEGER, constraints - PK, U, Not, AI
+* session_id: type - TEXT, constraints - U
+* password: type - TEXT, constraints - Not
+
+Table: images
+* id: type - INTEGER, constraints - PK, U, Not, AI
+* citation: type - TEXT, constraints - Not
+* user_id: type - INTEGER, constraints - Not
+
+Table: tags
+* id: type - INTEGER, constraints - PK, U, Not, AI
+* tag: type - TEXT, constraints - U, Not
+
+Table: image_tags
+* id: type - INTEGER, constraints - PK, U, Not, AI
+* image_id: type - INTEGER, constraints - Not
+* tag_id: type - INTEGER, constraints - Not
+
+
 
 
 ## Code Planning
 
 [Plan what top level PHP pages you'll need.]
-
+index.php, image.php
 
 [Plan what templates you'll need.]
-
+Templates for header and footer.
 
 [Plan any PHP code you'll need.]
 
-Example:
-```
-function is_user_logged_in() {
-  if user is logged in, return true
-  otherwise, return false
-}
+Checking if user is logged in
+  - If user logged in
+    - Create session and store in database
+    - Send uniquely created session ID as session cookie to user
+    - User may upload image to gallery
+    - If user's id matches user_id of image:
+      - May delete that image
+      - May delete tags from that image
+    - If user logs out
+      - Destroy session in database
+      - Reset session cookie
+  - Else:
+    - May tag images
+    - May view images
 
-// Show logout, only if user is logged in.
-if user is logged in (is_user_logged_in()) then
-  show logout link
-else
-  show login link
-end
-```
+Search form
+- If no search:
+  - Show all images
+- If search:
+  - Show only images with those tags
+
+Add new tag in add new image form or to pre-existing image:
+- Separate new tag field by commas into an array
+- Strip each element of array of whitespace
+- Check if each tag already exists in list of tags
+  - If new tag does not already exist:
+    - Add tag to list of tags
+    - Add tag to image
+  - Else:
+    - Echo that tag already exists
+
+
 
 
 ## Database Query Plan
 
 [Plan your database queries. You may use natural language, pseudocode, or SQL.]
 
+Users should be able to view all images in your photo gallery at once.
+```sql
+    SELECT images.first_name, students.last_name, majors.major FROM students LEFT OUTER JOIN majors ON majors.id = students.major_id;
+```
+Users should be able to view all images for a tag at once.
+Users should be able to view a single image and all the tags for that image at once.
+Users should be able to upload a new image.
+Users should be able to remove (delete) an image.
+Make sure you clean up any relationships to the image in other tables. (Where the image is a foreign key.)
+Make sure you delete the corresponding file upload from disk.
+Users should be able to view all tags at once.
+Users should be able to add an existing tag to an image, add a new tag to an image, and remove a tag from an image.
 
 # Project 3, Milestone 2 - Gallery and User Access Controls
 
