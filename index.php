@@ -40,7 +40,7 @@ $title = "Home";
 
     <div id="aboutDiv">
       <h2>About</h2>
-          <p><strong>Welcome to InspoFormal!</strong>Our mission is to provide a platform for users to share their styles and inspirations for their special formal events.</p>
+          <p><strong>Welcome to InspoFormal!</strong> Our mission is to provide a platform for users to share their styles and inspirations for their special formal events.</p>
     </div>
 
     <hr />

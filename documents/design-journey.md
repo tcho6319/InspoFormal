@@ -75,6 +75,7 @@ Table: images
 * id: type - INTEGER, constraints - PK, U, Not, AI
 * citation: type - TEXT, constraints - Not
 * user_id: type - INTEGER, constraints - Not
+* img_ext: type - TEXT, constraints - Not
 
 Table: tags
 * id: type - INTEGER, constraints - PK, U, Not, AI
@@ -205,38 +206,3 @@ SELECT tags.tag FROM tags;
   <p id="email">Contact Us: tsc82@cornell.edu</p>
 </div>
 </footer>
-
-    <form id="searchForm" action="index.php" method="get">
-      <fieldset>
-      <legend>Search For or Filter Films</legend>
-      <label for="movie_name_searchField">Movie Name: </label><input id="movie_name_searchField" type="text" name="movie_name_searchField"/>
-      &#9679;
-      <label for="genre_searchField">Genre: </label><input id ="genre_searchField" type="text" name="genre_searchField"/>
-      &#9679;
-      <label for="length_searchField">Movie Length: </label>
-      <input id="length_searchField" type="number" name="length_searchField" min = "0"> minutes
-      &#9679;
-      <label for="rating_searchField">MPAA Rating (i.e. G, PG, PG-13): </label><input id="rating_searchField" type="text" name="rating_searchField"/>
-      <button type="submit">Search</button>
-      </fieldset>
-    </form>
-
-
-      <form id="uploadFile" action="box.php" method="post" enctype="multipart/form-data">
-        <ul>
-          <li>
-            <!-- MAX_FILE_SIZE must precede the file input field -->
-            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo MAX_FILE_SIZE; ?>" />
-
-            <label for="box_file">Upload File:</label>
-            <input id="box_file" type="file" name="box_file">
-          </li>
-          <li>
-            <label for="box_desc">Description:</label>
-            <textarea id="box_desc" name="description" cols="40" rows="5"></textarea>
-          </li>
-          <li>
-            <button name="submit_upload" type="submit">Upload File</button>
-          </li>
-        </ul>
-      </form>
