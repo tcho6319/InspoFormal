@@ -197,3 +197,26 @@ SELECT tags.tag FROM tags;
 ## Reflection
 
 [Take this time to reflect on what you learned during this assignment. How have you improved since starting this class? 2-4 sentences]
+
+
+
+<footer>
+<div class="footerSect">
+  <p id="email">Contact Us: tsc82@cornell.edu</p>
+</div>
+</footer>
+
+    <form id="searchForm" action="index.php" method="get">
+      <fieldset>
+      <legend>Search For or Filter Films</legend>
+      <label for="movie_name_searchField">Movie Name: </label><input id="movie_name_searchField" type="text" name="movie_name_searchField"/>
+      &#9679;
+      <label for="genre_searchField">Genre: </label><input id ="genre_searchField" type="text" name="genre_searchField"/>
+      &#9679;
+      <label for="length_searchField">Movie Length: </label>
+      <input id="length_searchField" type="number" name="length_searchField" min = "0"> minutes
+      &#9679;
+      <label for="rating_searchField">MPAA Rating (i.e. G, PG, PG-13): </label><input id="rating_searchField" type="text" name="rating_searchField"/>
+      <button type="submit">Search</button>
+      </fieldset>
+    </form>
