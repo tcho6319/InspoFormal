@@ -220,3 +220,23 @@ SELECT tags.tag FROM tags;
       <button type="submit">Search</button>
       </fieldset>
     </form>
+
+
+      <form id="uploadFile" action="box.php" method="post" enctype="multipart/form-data">
+        <ul>
+          <li>
+            <!-- MAX_FILE_SIZE must precede the file input field -->
+            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo MAX_FILE_SIZE; ?>" />
+
+            <label for="box_file">Upload File:</label>
+            <input id="box_file" type="file" name="box_file">
+          </li>
+          <li>
+            <label for="box_desc">Description:</label>
+            <textarea id="box_desc" name="description" cols="40" rows="5"></textarea>
+          </li>
+          <li>
+            <button name="submit_upload" type="submit">Upload File</button>
+          </li>
+        </ul>
+      </form>
