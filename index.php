@@ -61,8 +61,45 @@ $title = "Home";
 
   <!-- If user logged in -->
   <div id="addImgDiv">
-    <form id="addImgForm">
+    <form id="addImgForm" action="index.php" method="post" enctype="multipart/form-data">
+      <fieldset>
+      <legend>Add an Image</legend>
+          <ul>
+            <li>
+              <!-- Set max file size to be 10 MB -->
+              <input type="hidden" name="max_file_size" value="10000000"/>
+              <label for="img_file">Upload Image: </label>
+              <input id="img_file" type="file" name="img_file">
+            </li>
+
+            <li>
+              <label for="exist_tag">Existing Tags: </label>
+              <select multiple id="exist_tag">
+
+                <?php
+                  //Getting list of all the tags in the database
+                  $tags = exec_sql_query($db, "SELECT DISTINCT tag FROM tags", NULL)->fetchAll(PDO::FETCH_COLUMN);
+
+                  //echoing multiple select option for every tag
+                  foreach ($tags as $tag) {
+                    echo "<option value='" . strtolower(htmlspecialchars($tag)) . "'>".ucfirst(htmlspecialchars($tag))."</option>";
+                  }
+                ?>
+              </select>
+            </li>
+
+            <li>
+              <label for="new_tag">New Tags (separated by commas): </label>
+              <input type="text" name="new_tag"/>
+            </li>
+
+            <li>
+              <button name="add_img" type="submit">Add Image</button>
+            </li>
+          <ul>
+      </fieldset>
     </form>
+
   </div>
   <?php include("includes/footer.php"); ?>
 </body>
