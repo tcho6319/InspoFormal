@@ -63,8 +63,13 @@ I will use a template for my header and my footer.
 
 Table: users
 * id: type - INTEGER, constraints - PK, U, Not, AI
-* session_id: type - INTEGER, constraints - U, AI
+* username: type - TEXT, constraints - U, Not
 * password: type - TEXT, constraints - Not
+
+Table: sessions
+* id: type - INTEGER, constraints - PK, U, Not, AI
+* user_id: type - INTEGER, constraints - Not
+* session: type - TEXT, constraints - U, Not
 
 Table: images
 * id: type - INTEGER, constraints - PK, U, Not, AI

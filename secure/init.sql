@@ -6,15 +6,24 @@ BEGIN TRANSACTION;
 -- Users Table
 CREATE TABLE 'users' (
     'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    'session_id' INTEGER AUTOINCREMENT UNIQUE,
+    'username' TEXT NOT NULL UNIQUE,
     'password' TEXT NOT NULL
 );
 
 --Users table seed data
 -- TODO: FOR HASHED PASSWORDS, LEAVE A COMMENT WITH THE PLAIN TEXT PASSWORD!
-INSERT INTO 'users' (id, session_id, password) VALUES (1, 1, 'monkey');
+INSERT INTO 'users' (id, username, password) VALUES (1, "lesKnope", 'waffles');
+-- Username: lesKnope, Password: waffles
 
-INSERT INTO 'users' (id, session_id, password) VALUES (2, 2, 'monkey');
+INSERT INTO 'users' (id, username, password) VALUES (2, "tommyH", 'treatYOSELF');
+-- Username: tommyH, Password: treatYOSELF
+
+-- Sessions Table
+CREATE TABLE 'sessions' (
+    'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    'user_id' INTEGER NOT NULL,
+    'session' TEXT NOT NULL UNIQUE
+);
 
 -- Images Table
 CREATE TABLE 'images' (
