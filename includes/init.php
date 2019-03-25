@@ -67,4 +67,72 @@ function exec_sql_query($db, $sql, $params = array())
 
 $db = open_or_init_sqlite_db('secure/gallery.sqlite', 'secure/init.sql');
 
+//Handling login and logout
+$user_messages = array(); //messages array for the user
+
+function logIn($username, $password){
+  //Returns online_user, NULL if none
+  //make db, online_user, user_messages global vars
+  global $db;
+  global $online_user;
+  global $user_messages;
+
+  //login button pushed and user and pass given
+  if ( isset($username) && isset($password) ){
+    //check if username is in the db
+    $sql = "SELECT * FROM users WHERE username = :username;";
+    $params = array(
+      ':username' => $username
+    );
+
+    $records = exec_sql_query($db, $sql, $params)->fetchAll();
+
+    if ($records){ //we have a username in the db
+      $userAcct = $records[0]; //get the acct for this user
+      //check if password is same as hash
+      if ( password_verify($password, $userAcct['password'])){
+        //create a session
+        $session = session_create_id();
+        //update session id in database in sessions table for corresponding userid
+        $sql = "UPDATE sessions SET session = :session WHERE user_id = :user_id;";
+
+        $params = array(
+          ':session' => $session,
+          ':user_id' => $userAcct['id']
+        );
+
+        $result = exec_sql_query($db, $sql, $params);
+        if ($result){
+          //session successfully stored in db
+          //set cookie
+          setcookie("session", $session, time()+3600); //cookie lasts for one hour
+          $online_user = find_session_user($session);
+          return $online_user;
+        } else{ //could not store session
+          array_push($user_messages, "Unable to login.");
+        }
+      } else { //Invalid password
+        array_push($user_messages, "Invalid password.");
+      }
+    } else { //Invalid username
+      array_push($user_messages, "Invalid username.");
+    }
+  } else { //no username or password
+    array_push($user_messages, "No username or password provided.");
+  }
+  //failed login
+  $online_user = NULL;
+  return NULL;
+}
+
+//def find_session_user($session)
+function find_session_user($session){
+  //Returns the user record that corresponds to the session
+  global $db;
+  if (isset($session)){ //a session id exists in db
+    $sql = "SELECT * FROM users  WHERE session = :session;";
+
+  }
+}
+
 ?>

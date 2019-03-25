@@ -12,10 +12,10 @@ CREATE TABLE 'users' (
 
 --Users table seed data
 -- TODO: FOR HASHED PASSWORDS, LEAVE A COMMENT WITH THE PLAIN TEXT PASSWORD!
-INSERT INTO 'users' (id, username, password) VALUES (1, "lesKnope", 'waffles');
+INSERT INTO 'users' (id, username, password) VALUES (1, "lesKnope", '$2y$10$jfh/q8KbXy4ujbrX3awczusXOgFkLELimM2bp7PhfX4AiSac7xyy2');
 -- Username: lesKnope, Password: waffles
 
-INSERT INTO 'users' (id, username, password) VALUES (2, "tommyH", 'treatYOSELF');
+INSERT INTO 'users' (id, username, password) VALUES (2, "tommyH", '$2y$10$w9rekE18czcnSAcZj3cSJ.ftouU9n1KvIeYzn/hpZylwCGd.GsbXu');
 -- Username: tommyH, Password: treatYOSELF
 
 -- Sessions Table
