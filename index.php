@@ -25,7 +25,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
   //TO DO: FILTER NEW TAG
 
   //if add is successful -> record new img in db and store img in uploads directory
-  if (isset($add_success)){
+  if ($add_info["error"] == UPLOAD_ERR_OK){
     // $add_info = $_FILES["img_file"];
     // // global $online_user;
     // echo $add_info["name"];
