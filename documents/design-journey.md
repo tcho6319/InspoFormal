@@ -199,11 +199,3 @@ I am having a lot of trouble with adding an image to the gallery. For some reaso
 ## Reflection
 
 [Take this time to reflect on what you learned during this assignment. How have you improved since starting this class? 2-4 sentences]
-
-
-
-<footer>
-<div class="footerSect">
-  <p id="email">Contact Us: tsc82@cornell.edu</p>
-</div>
-</footer>
