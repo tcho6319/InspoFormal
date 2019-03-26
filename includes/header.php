@@ -7,7 +7,10 @@
         </div>
 
         <!-- Implement login bar here -->
-        <!-- If userloggedin -->
+<?php if (!(is_logged_in())){ ?>
+
+
+        <!-- If user not loggedin -->
         <div class="loginDiv">
             <form id="loginForm" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?>" method="post">
                 <label for="username">Username: </label>
@@ -18,10 +21,16 @@
 
                 <button name="login" type="submit">Log In</button>
         </div>
+<?php }
 
-        <!-- If user not logged in -->
+if (is_logged_in()){ ?>
+        <!-- If user logged in -->
         <div class="loginDiv">
             <!-- Logout link here -->
+            <form id="logoutForm" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] ); ?>" method="post">
+                Welcome, <?php echo htmlspecialchars($online_user['username']); ?>
+                <button name="logout" type="submit">Log Out</button>
         </div>
+<?php } ?>
     </div>
 </header>

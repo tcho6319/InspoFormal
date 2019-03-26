@@ -52,10 +52,10 @@ $title = "Home";
     </div>
 
     <!-- If tags selected in search form -->
-    <div class="galleryDiv">
-      <h2>Search Results</h2>
+    <!-- <div class="galleryDiv">
+      <h2>Search Results</h2> -->
         <!-- Do sql query to get images with the tags -->
-    </div>
+    <!-- </div> -->
 
 <hr />
 
