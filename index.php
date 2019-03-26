@@ -3,6 +3,64 @@
 include("includes/init.php");
 
 $title = "Home";
+
+//Add image php
+//Code adapted from Source: Kyle Harms INFO 2300: Lab 8
+if (isset($_POST["add_img"]) && is_logged_in()){
+  //filter img_file input and other inputs
+  $add_info = $_FILES["img_file"];
+
+  if ($add_info["error"] == UPLOAD_ERR_OK){
+    $add_success = True;
+  }
+
+  // if ($_FILES["img_file"]["error"] == UPLOAD_ERR_OK){
+  //   $add_success = True;
+  // }
+  $add_description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
+
+  $add_citation = filter_input(INPUT_POST, "citation", FILTER_SANITIZE_STRING);
+
+  //TO DO: FILTER EXISTING TAGS
+  //TO DO: FILTER NEW TAG
+
+  //if add is successful -> record new img in db and store img in uploads directory
+  if (isset($add_success)){
+    // $add_info = $_FILES["img_file"];
+    // // global $online_user;
+    // echo $add_info["name"];
+    // echo "hi";
+    $add_basename = basename($_FILES["img_file"]["name"]);
+    // echo $add_basename;
+    $add_ext = strtolower( pathinfo($add_basename, PATHINFO_EXTENSION) );
+
+    //record new add img into db
+    $online_user_id = $online_user['id'];
+    //TO DO: MODIFY SQL QUERY TO INCLUDE ADD IMG WITH TAGS
+    $sql = "INSERT INTO images ('citation', 'user_id', 'img_ext', 'a_description') VALUES (:add_citation, :online_user_id, :add_ext, :add_description);";
+
+    $params = array(
+      ':add_citation' => $add_citation,
+      ':online_user_id' => $online_user_id,
+      ':add_ext' => $add_ext,
+      ':add_description' => $add_description
+    );
+
+    $result = exec_sql_query($db, $sql, $params);
+
+    //store add img in uploads directory
+    $add_id = $db -> lastInsertId("id");
+
+    $new_path = "uploads/images/" . $add_id . "." . $add_ext;
+
+    move_uploaded_file($_FILES["img_file"]["tmp_name"], $new_path);
+
+    $add_info["tmp_name"]  = $new_path;
+
+  }
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,8 +147,12 @@ $title = "Home";
               <!-- Set max file size to be 10 MB -->
               <input type="hidden" name="max_file_size" value="10000000"/>
               <label for="img_file">Upload Image: </label>
-              <input id="img_file" type="file" name="img_file">
+              <input id="img_file" name="img_file" type="file"/>
             </li>
+
+            <li>
+              <label for="description">Image Description: </label>
+              <input id="description" type="text" name="description"/>
 
             <li>
               <label for="exist_tag">Existing Tags: </label>
@@ -110,7 +172,12 @@ $title = "Home";
 
             <li>
               <label for="new_tag">New Tags (separated by commas): </label>
-              <input type="text" name="new_tag"/>
+              <input id="new_tag" type="text" name="new_tag"/>
+            </li>
+
+            <li>
+              <label for="citation">Image Citation: </label>
+              <input id="citation" type="text" name="citation"/>
             </li>
 
             <li>
