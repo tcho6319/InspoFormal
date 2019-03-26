@@ -10,6 +10,7 @@ $title = "Home";
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="styles/all.css" media="all" />
 
   <title>Home</title>
 </head>
@@ -46,8 +47,8 @@ $title = "Home";
     <hr />
 
     <!-- If no tags selected in search form -->
+    <h2>All Results</h2>
     <div class="galleryDiv">
-      <h2>All Results</h2>
         <!-- Do sql query to get all images -->
         <?php
         $sql = "SELECT * FROM images;";
@@ -59,7 +60,7 @@ $title = "Home";
         if (count($records) > 0){
           // echo'<li><img alt="light pink dress" src="uploads/images/1.jpeg"/></li>';
           foreach($records as $record){
-            echo '<li><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></li>';
+            echo '<div class="img"><li><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></li></div>';
           }
         }
         ?>

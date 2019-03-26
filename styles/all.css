@@ -1,0 +1,22 @@
+
+
+/* Gallery style */
+
+.galleryDiv{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    width: 100%;
+    margin-left: 40px;
+}
+
+img{
+    width: 320px;
+    height: 533px;
+    margin-right: 20px;
+}
+/*
+.img{
+    flex: 1 1 160px;
+} */
