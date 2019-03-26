@@ -192,7 +192,7 @@ SELECT tags.tag FROM tags;
 ## Issues & Challenges
 
 [Tell us about any issues or challenges you faced while trying to complete milestone 2. 2-4 sentences/bullet points]
-
+I am having a lot of trouble with adding an image to the gallery. For some reason, I can't access the ["name"] of the file.
 
 # Final Submission: Complete & Polished Website
 
