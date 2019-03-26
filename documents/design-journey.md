@@ -76,6 +76,7 @@ Table: images
 * citation: type - TEXT, constraints - Not
 * user_id: type - INTEGER, constraints - Not
 * img_ext: type - TEXT, constraints - Not
+* a_description: type - TEXT, constraints - Not
 
 Table: tags
 * id: type - INTEGER, constraints - PK, U, Not, AI

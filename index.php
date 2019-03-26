@@ -48,7 +48,25 @@ $title = "Home";
     <!-- If no tags selected in search form -->
     <div class="galleryDiv">
       <h2>All Results</h2>
-        <!-- Do sql query to get all -->
+        <!-- Do sql query to get all images -->
+        <?php
+        $sql = "SELECT * FROM images;";
+
+        $params = array();
+
+        $records = exec_sql_query($db, $sql, $params)->fetchAll();
+
+        if (count($records) > 0){
+          // echo'<li><img alt="light pink dress" src="uploads/images/1.jpeg"/></li>';
+          foreach($records as $record){
+            echo '<li><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></li>';
+          }
+        }
+        ?>
+
+
+
+
     </div>
 
     <!-- If tags selected in search form -->
@@ -60,6 +78,7 @@ $title = "Home";
 <hr />
 
   <!-- If user logged in -->
+  <?php if (is_logged_in()){ ?>
   <div id="addImgDiv">
     <form id="addImgForm" action="index.php" method="post" enctype="multipart/form-data">
       <fieldset>
@@ -101,6 +120,7 @@ $title = "Home";
     </form>
 
   </div>
+<?php } ?>
   <?php include("includes/footer.php"); ?>
 </body>
 </html>
