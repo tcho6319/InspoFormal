@@ -14,8 +14,28 @@ if (isset($_POST["add_img"]) && is_logged_in()){
 
   $add_citation = filter_input(INPUT_POST, "citation", FILTER_SANITIZE_STRING);
 
-  //TO DO: FILTER EXISTING TAGS
-  //TO DO: FILTER NEW TAG
+  //FILTER EXISTING TAGS
+  if (isset($_POST["exist_tag"]) && $_POST["exist_tag"] != ""){
+    $add_exist_tags_unfiltered = $_POST["exist_tag"];
+    $add_exist_tags_filtered = array();
+    foreach($add_exist_tags_unfiltered as $add_exist_tag_unfilt){
+      $add_exist_tags_filtered[] = filter_var($add_exist_tag_unfilt, FILTER_SANITIZE_STRING);
+    }
+  }
+
+
+  //FILTER NEW TAG
+  if (isset($_POST["new_tag"])&& $_POST["new_tag"] != "") {
+    $add_new_tag = filter_input(INPUT_POST, "new_tag", FILTER_SANITIZE_STRING);
+    //Separate string input by commas to create new_tags array
+    $add_new_tags_filtered_split = explode(",", $add_new_tag);
+    $add_new_tags_filtered = array();
+    foreach ($add_new_tags_filtered_split as $add_new_tag_filtered){
+      $add_new_tag_filtered = trim($add_new_tag_filtered);
+      $add_new_tag_filtered = strtolower($add_new_tag_filtered);
+      $add_new_tags_filtered[] = $add_new_tag_filtered;
+    }
+  }
 
   //if add is successful -> record new img in db and store img in uploads directory
   if ($add_info["error"] == UPLOAD_ERR_OK){
@@ -47,60 +67,75 @@ if (isset($_POST["add_img"]) && is_logged_in()){
 
     $add_info["tmp_name"]  = $new_path;
 
+
+    //Adding tags and imgs to db with upload
+    $all_tags_for_db = array();
+    if(isset($_POST["exist_tag"]) && $_POST["exist_tag"] != ""){
+      $all_tags_for_db = $add_exist_tags_filtered;
+
+      if(isset($_POST["new_tag"]) && $_POST["new_tag"] != ""){
+        //merge the existing tag and new tag array w/o dupes
+        $all_tags_for_db = array_unique(array_merge($all_tags_for_db, $add_new_tags_filtered));
+      }
+    }
+
+    elseif(isset($_POST["new_tag"])&& $_POST["new_tag"] != ""){
+      $all_tags_for_db = $add_new_tags_filtered;
+    }
+
+    if(!(empty($all_tags_for_db))){
+      if(isset($_POST["new_tag"])&& $_POST["new_tag"] != ""){
+      //Extract new tags from $all_tags_for_db
+      $new_tags_to_add_to_db = array();
+
+      $all_existing_tags = exec_sql_query($db, "SELECT DISTINCT tag FROM tags", NULL)->fetchAll(PDO::FETCH_COLUMN);
+
+
+      foreach($all_tags_for_db as $tag_for_db){
+        if(!(in_array($tag_for_db, $all_existing_tags))){
+          $new_tags_to_add_to_db[] = $tag_for_db;
+        }
+      }
+
+      //Add new tag to db tags table
+      $new_tags_to_add_to_db = array_unique($new_tags_to_add_to_db);
+      foreach($new_tags_to_add_to_db as $new_tag_for_db){
+        $sql = "INSERT INTO tags ('tag') VALUES (:new_tag_for_db);";
+
+        $params = array(
+          ':new_tag_for_db' => $new_tag_for_db
+        );
+
+        $result = exec_sql_query($db, $sql, $params);
+      }
+
+      //Add entries in image_tags table
+      foreach($all_tags_for_db as $tag_for_db){
+        $tag_for_db_id_query = exec_sql_query($db, "SELECT id FROM tags WHERE :tag_for_db = tag", array(':tag_for_db' => $tag_for_db))->fetchAll();
+
+        $tag_for_db_id = $tag_for_db_id_query[0]["id"];
+
+
+
+
+        $sql = "INSERT INTO image_tags ('image_id', 'tag_id') VALUES (:add_id, :tag_for_db_id);";
+
+        $params = array(
+          ':add_id' => $add_id,
+          ':tag_for_db_id' => $tag_for_db_id
+
+        );
+
+        $result = exec_sql_query($db, $sql, $params);
+      }
+
+
+    }
+  }
+
   }
 }
 
-// const MAX_FILE_SIZE = 1000000;
-// // Users must be logged in to upload files!
-// if ( isset($_POST["add_img"]) && is_logged_in() ) {
-//   $test = $_FILES["img_file"];
-//   // var_dump($test);
-
-//   // TODO: filter input for the "box_file" and "description" parameters.
-//   // Hint: filtering input for files means checking if the upload was successful
-//   if ($_FILES["img_file"]["error"] == UPLOAD_ERR_OK) {
-//     $upload_success = True;
-//   }
-//   $upload_description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
-
-//   $upload_citation = filter_input(INPUT_POST, "citation", FILTER_SANITIZE_STRING);
-//   // TODO: If the upload was successful, record the upload in the database
-//   // and permanently store the uploaded file in the uploads directory.
-//   if ( isset($upload_success) ) {
-//     $upload_info = $_FILES["img_file"];
-//     // var_dump($upload_info);
-//     var_dump($_FILES);
-//     var_dump($_POST);
-//     $upload_basename = basename($upload_info["name"]);
-//     $upload_ext = strtolower( pathinfo($upload_basename, PATHINFO_EXTENSION));
-//     // echo "Upload description is" . $upload_description;
-
-
-//      //record new add img into db
-//     $online_user_id = $online_user['id'];
-//     //TO DO: MODIFY SQL QUERY TO INCLUDE ADD IMG WITH TAGS
-//     $sql = "INSERT INTO images ('citation', 'user_id', 'img_ext', 'a_description') VALUES (:upload_citation, :online_user_id, :upload_ext, :upload_description);";
-
-//     $params = array(
-//       ':upload_citation' => $upload_citation,
-//       ':online_user_id' => $online_user_id,
-//       ':upload_ext' => $upload_ext,
-//       ':upload_description' => $upload_description
-//     );
-
-//     $result = exec_sql_query($db, $sql, $params);
-
-//     //store uploaded file in the uploads directory
-//     $upload_id = $db -> lastInsertId("id");
-
-//     $new_path = "uploads/images/" . $upload_id . "." . $upload_ext;
-
-//     move_uploaded_file($_FILES["img_file"]["tmp_name"], $new_path);
-
-//     $upload_info["tmp_name"] = $new_path;
-
-//   }
-// }
 ?>
 
 
@@ -188,8 +223,8 @@ if (isset($_POST["add_img"]) && is_logged_in()){
   <?php if (is_logged_in()){ ?>
   <div id="addImgDiv">
     <form id="addImgForm" action="index.php" method="post" enctype="multipart/form-data">
-      <!-- <fieldset>
-      <legend>Add an Image</legend> -->
+      <fieldset>
+      <legend>Add an Image</legend>
           <ul>
             <li>
               <!-- Set max file size to be 10 MB -->
@@ -205,7 +240,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
 
             <li>
               <label for="exist_tag">Existing Tags: </label>
-              <select multiple id="exist_tag">
+              <select name="exist_tag[]" multiple >
 
                 <?php
                   //Getting list of all the tags in the database
@@ -233,7 +268,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
               <button name="add_img" type="submit">Add Image</button>
             </li>
           </ul>
-      <!-- </fieldset> -->
+      </fieldset>
     </form>
 
   </div>
