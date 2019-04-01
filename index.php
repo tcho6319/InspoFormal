@@ -165,7 +165,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
         <fieldset>
         <legend>Search For or Filter Images</legend>
         <label for="tag_search">Tags: </label>
-        <select multiple id="tag_search">
+        <select multiple name="tag_search[]">
 
           <?php
           //Getting list of all the tags in the database
@@ -177,6 +177,8 @@ if (isset($_POST["add_img"]) && is_logged_in()){
           }
           ?>
         </select>
+        <button name="search_tag_button" type="submit">Filter Images</button>
+        </fieldset>
       </form>
     </div>
 
@@ -188,6 +190,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
     <hr />
 
     <!-- If no tags selected in search form -->
+    <?php if (!(isset($_POST["search_tag_button"]) && isset($_POST["tag_search"]) && $_POST["tag_search"] != "")){ ?>
     <h2>All Results</h2>
     <div class="galleryDiv">
         <!-- Do sql query to get all images -->
@@ -206,17 +209,41 @@ if (isset($_POST["add_img"]) && is_logged_in()){
         }
         ?>
 
-
-
-
     </div>
+  <?php } ?>
 
     <!-- If tags selected in search form -->
-    <!-- <div class="galleryDiv">
-      <h2>Search Results</h2> -->
+    <?php if (isset($_POST["search_tag_button"]) && isset($_POST["tag_search"]) && $_POST["tag_search"] != ""){ ?>
+    <h2>Search Results</h2>
+    <div class="galleryDiv">
         <!-- Do sql query to get images with the tags -->
-    <!-- </div> -->
+        <?php
+        //Filter search tags
+        $search_tags_unfiltered = $_POST["tag_search"];
+        $search_tags_filtered = array();
+        foreach($search_tags_unfiltered as $search_tag_unfilt){
+          $search_tags_filtered[] = filter_var($search_tag_unfilt, FILTER_SANITIZE_STRING);
+        }
 
+        foreach($search_tags_filtered as $search_tag_filtered){
+          $sql = "SELECT images.id, images.citation, images.user_id, images.img_ext, images.a_description FROM images INNER JOIN image_tags ON images.id = image_tags.image_id INNER JOIN tags on image_tags.tag_id = tags.id WHERE :search_tag_filtered = tags.tag;";
+
+          $params = array(
+            ':search_tag_filtered' => $search_tag_filtered
+          );
+
+          $records = exec_sql_query($db, $sql, $params)->fetchAll();
+
+          if (count($records) > 0){
+            // echo'<li><img alt="light pink dress" src="uploads/images/1.jpeg"/></li>';
+            foreach($records as $record){
+              echo '<div class="img"><li><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></li></div>';
+            }
+          }
+        }
+        ?>
+    </div>
+    <?php } ?>
 <hr />
 
   <!-- If user logged in -->
