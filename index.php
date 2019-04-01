@@ -6,17 +6,10 @@ $title = "Home";
 
 //Add image php
 //Code adapted from Source: Kyle Harms INFO 2300: Lab 8
+const MAX_FILE_SIZE = 1000000;
 if (isset($_POST["add_img"]) && is_logged_in()){
   //filter img_file input and other inputs
   $add_info = $_FILES["img_file"];
-
-  if ($add_info["error"] == UPLOAD_ERR_OK){
-    $add_success = True;
-  }
-
-  // if ($_FILES["img_file"]["error"] == UPLOAD_ERR_OK){
-  //   $add_success = True;
-  // }
   $add_description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
 
   $add_citation = filter_input(INPUT_POST, "citation", FILTER_SANITIZE_STRING);
@@ -26,12 +19,9 @@ if (isset($_POST["add_img"]) && is_logged_in()){
 
   //if add is successful -> record new img in db and store img in uploads directory
   if ($add_info["error"] == UPLOAD_ERR_OK){
-    // $add_info = $_FILES["img_file"];
-    // // global $online_user;
-    // echo $add_info["name"];
-    // echo "hi";
+
     $add_basename = basename($_FILES["img_file"]["name"]);
-    // echo $add_basename;
+
     $add_ext = strtolower( pathinfo($add_basename, PATHINFO_EXTENSION) );
 
     //record new add img into db
@@ -60,8 +50,65 @@ if (isset($_POST["add_img"]) && is_logged_in()){
   }
 }
 
+// const MAX_FILE_SIZE = 1000000;
+// // Users must be logged in to upload files!
+// if ( isset($_POST["add_img"]) && is_logged_in() ) {
+//   $test = $_FILES["img_file"];
+//   // var_dump($test);
 
+//   // TODO: filter input for the "box_file" and "description" parameters.
+//   // Hint: filtering input for files means checking if the upload was successful
+//   if ($_FILES["img_file"]["error"] == UPLOAD_ERR_OK) {
+//     $upload_success = True;
+//   }
+//   $upload_description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
+
+//   $upload_citation = filter_input(INPUT_POST, "citation", FILTER_SANITIZE_STRING);
+//   // TODO: If the upload was successful, record the upload in the database
+//   // and permanently store the uploaded file in the uploads directory.
+//   if ( isset($upload_success) ) {
+//     $upload_info = $_FILES["img_file"];
+//     // var_dump($upload_info);
+//     var_dump($_FILES);
+//     var_dump($_POST);
+//     $upload_basename = basename($upload_info["name"]);
+//     $upload_ext = strtolower( pathinfo($upload_basename, PATHINFO_EXTENSION));
+//     // echo "Upload description is" . $upload_description;
+
+
+//      //record new add img into db
+//     $online_user_id = $online_user['id'];
+//     //TO DO: MODIFY SQL QUERY TO INCLUDE ADD IMG WITH TAGS
+//     $sql = "INSERT INTO images ('citation', 'user_id', 'img_ext', 'a_description') VALUES (:upload_citation, :online_user_id, :upload_ext, :upload_description);";
+
+//     $params = array(
+//       ':upload_citation' => $upload_citation,
+//       ':online_user_id' => $online_user_id,
+//       ':upload_ext' => $upload_ext,
+//       ':upload_description' => $upload_description
+//     );
+
+//     $result = exec_sql_query($db, $sql, $params);
+
+//     //store uploaded file in the uploads directory
+//     $upload_id = $db -> lastInsertId("id");
+
+//     $new_path = "uploads/images/" . $upload_id . "." . $upload_ext;
+
+//     move_uploaded_file($_FILES["img_file"]["tmp_name"], $new_path);
+
+//     $upload_info["tmp_name"] = $new_path;
+
+//   }
+// }
 ?>
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,6 +142,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
           }
           ?>
         </select>
+      </form>
     </div>
 
     <div id="aboutDiv">
@@ -140,19 +188,20 @@ if (isset($_POST["add_img"]) && is_logged_in()){
   <?php if (is_logged_in()){ ?>
   <div id="addImgDiv">
     <form id="addImgForm" action="index.php" method="post" enctype="multipart/form-data">
-      <fieldset>
-      <legend>Add an Image</legend>
+      <!-- <fieldset>
+      <legend>Add an Image</legend> -->
           <ul>
             <li>
               <!-- Set max file size to be 10 MB -->
-              <input type="hidden" name="max_file_size" value="10000000"/>
+              <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo MAX_FILE_SIZE; ?>"/>
               <label for="img_file">Upload Image: </label>
-              <input id="img_file" name="img_file" type="file"/>
+              <input id="img_file" type="file" name="img_file"/>
             </li>
 
             <li>
               <label for="description">Image Description: </label>
               <input id="description" type="text" name="description"/>
+            </li>
 
             <li>
               <label for="exist_tag">Existing Tags: </label>
@@ -183,8 +232,8 @@ if (isset($_POST["add_img"]) && is_logged_in()){
             <li>
               <button name="add_img" type="submit">Add Image</button>
             </li>
-          <ul>
-      </fieldset>
+          </ul>
+      <!-- </fieldset> -->
     </form>
 
   </div>
