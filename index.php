@@ -204,7 +204,8 @@ if (isset($_POST["add_img"]) && is_logged_in()){
         if (count($records) > 0){
           // echo'<li><img alt="light pink dress" src="uploads/images/1.jpeg"/></li>';
           foreach($records as $record){
-            echo '<div class="img"><li><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></li></div>';
+            // echo '<div class="img"><li><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></li></div>';
+            echo '<div class="img"><li><a href="post.php?' . http_build_query( array( "id" => $record["id"] ) ) . '"><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></a></li></div>';
           }
         }
         ?>
@@ -237,7 +238,8 @@ if (isset($_POST["add_img"]) && is_logged_in()){
           if (count($records) > 0){
             // echo'<li><img alt="light pink dress" src="uploads/images/1.jpeg"/></li>';
             foreach($records as $record){
-              echo '<div class="img"><li><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></li></div>';
+              // echo '<div class="img"><li><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></li></div>';
+              echo '<div class="img"><li><a href="post.php?' . http_build_query( array( "id" => $record["id"] ) ) . '"><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></a></li></div>';
             }
           }
         }

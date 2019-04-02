@@ -16,3 +16,26 @@ img{
     height: 533px;
     margin-right: 20px;
 }
+
+.mainImgSoloDiv{
+    display:flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    width: 100%;
+}
+
+.imgSoloDiv img{
+    width: 550px;
+    height: auto;
+    margin-left: 150px;
+    margin-right: 40px;
+}
+
+.tagItem{
+    display: flex;
+    flex-direction: row;
+}
+
+.tagItem button{
+    margin-left: 40px;
+}
