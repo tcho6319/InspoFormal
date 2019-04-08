@@ -165,10 +165,10 @@ function session_login(){
       //renew cookie for an additional hour
       setcookie("session", $session, time()+3600);
     }
-    // return $online_user;
+    return $online_user;
   }
-  // $online_user = NULL;
-  // return NULL;
+  $online_user = NULL;
+  return NULL;
 }
 
 function is_logged_in(){

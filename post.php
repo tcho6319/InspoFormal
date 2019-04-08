@@ -16,10 +16,22 @@ if (isset($_GET['id'])){
     $records = exec_sql_query($db, $sql, $params)->fetchAll();
 
     $image_post = $records[0];
+
+    $image_post_id_isset = True;
 }
 
 //TO DO: DELETE TAG SQL UPDATES
+//Only uploader can delete tags
+if ( isset($_POST['"delete_' . $record['tag'] . '"']) && $online_user["id"] ==  $image_post["user_id"]){
+    $img_tag = $record["tag"];
+    $sql = "DELETE image_tags.id, image_tags.image_id, image_tags.tag_id FROM image_tags INNER JOIN tags ON tags.id = image_tags.tag_id WHERE (:img_tag = tags.tag);";
 
+    $params = array(
+        ':img_tag' => $img_tag
+    );
+
+    $result = exec_sql_query($db, $sql, $params);
+}
 //TO DO: FILTER ADD TAG SQL UPDATES
 
 //TO DO: DELETE IMAGE SQL UPDATE
@@ -65,7 +77,7 @@ if (isset($_GET['id'])){
 
             //only uploader can delete tags
             if($online_user["id"] ==  $image_post["user_id"]){
-                echo '<form id="delTagForm" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="post"><button name="delete_' . $record['tag'] . '" type="submit">Delete</button></form>';
+                echo '<form id="delTagForm" action="post.php?' . http_build_query( array( "id" => $record["id"] ) ) . '" method="post"><button name="delete_' . $record['tag'] . '" type="submit">Delete</button></form>';
             }
 
 
