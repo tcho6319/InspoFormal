@@ -25,37 +25,35 @@ if (isset($_GET['id'])){
 $image_post_id = $image_post["id"];
 
 //TO DO: Delete Tags
-// //Show all tags for the image
-// $sql = "SELECT tags.tag FROM tags INNER JOIN image_tags ON tags.id = image_tags.tag_id WHERE :img_id = image_id;";
+//Show all tags for the image
+$sql = "SELECT tags.tag FROM tags INNER JOIN image_tags ON tags.id = image_tags.tag_id WHERE :img_id = image_id;";
 
-// $params = array(
-//     ':img_id' => $id
-// );
+$params = array(
+    ':img_id' => $id
+);
 
-// $records_img_tags = exec_sql_query($db, $sql, $params)->fetchAll();
+$records_img_tags = exec_sql_query($db, $sql, $params)->fetchAll();
 
-// var_dump($records_img_tags);
+var_dump($records_img_tags);
 
-// foreach($records_img_tags as $record){
-// //TO DO: DELETE TAG SQL UPDATES
-//Only uploader can delete tags
-// var_dump(isset($_POST['"'. $button_name . '"']));
-// if ( isset($_POST['"delete_' . $record['tag'] . '"']) && $online_user["id"] ==  $image_post["user_id"]){
-//     echo "pressed delete tag button block";
-//     $img_tag = $record["tag"];
-//     $sql = "DELETE image_tags.id, image_tags.image_id, image_tags.tag_id FROM image_tags INNER JOIN tags ON tags.id = image_tags.tag_id WHERE (:img_tag = tags.tag);";
+foreach($records_img_tags as $record){
+//TO DO: DELETE TAG SQL UPDATES
+// Only uploader can delete tags
+var_dump(isset($_POST['"'. $button_name . '"']));
+if ( isset($_POST['"delete_' . $record['tag'] . '"']) && $online_user["id"] ==  $image_post["user_id"]){
+    echo "pressed delete tag button block";
+    $img_tag = $record["tag"];
+    $sql = "DELETE image_tags.id, image_tags.image_id, image_tags.tag_id FROM image_tags INNER JOIN tags ON tags.id = image_tags.tag_id WHERE (:img_tag = tags.tag);";
 
-//     $params = array(
-//         ':img_tag' => $img_tag
-//     );
+    $params = array(
+        ':img_tag' => $img_tag
+    );
 
-//     $result = exec_sql_query($db, $sql, $params);
-// }
-// }
-//TO DO: FILTER ADD TAG SQL UPDATES
+    $result = exec_sql_query($db, $sql, $params);
+}
+}
 
-var_dump(isset($_POST["add_exist_tag"]));
-
+//FILTER ADD TAG SQL UPDATES
 if ( isset($_POST["add_tags_button"])){
     //FILTER EXISTING TAGS
   if (isset($_POST["add_exist_tag"]) && $_POST["add_exist_tag"] != ""){
@@ -89,7 +87,7 @@ if ( isset($_POST["add_tags_button"])){
       //merge the existing tag and new tag array w/o dupes
       $all_tags_for_db = array_unique(array_merge($all_tags_for_db, $add_new_tags_filtered));
     }
-    var_dump($all_tags_for_db);
+
   }
 
   elseif(isset($_POST["add_new_tag"])&& $_POST["add_new_tag"] != ""){
@@ -128,22 +126,22 @@ if ( isset($_POST["add_tags_button"])){
     $all_existing_tags_img = exec_sql_query($db, "SELECT DISTINCT tag FROM tags INNER JOIN image_tags ON image_tags.tag_id = tags.id INNER JOIN images ON image_tags.image_id = images.id WHERE :img_id = images.id", array(':img_id' => $image_post_id))->fetchAll(PDO::FETCH_COLUMN);
 
     $all_tags_to_add_db = array();
-    var_dump($all_tags_for_db);
+
     foreach($all_tags_for_db as $tag_for_db){
         if(!(in_array($tag_for_db, $all_existing_tags_img))){
           $all_tags_to_add_db[] = $tag_for_db;
         }
       }
-    var_dump($all_tags_to_add_db);
+
 
     //Add entries in image_tags table
-    var_dump($all_tags_for_db);
+
     $all_tags_to_add_db = array_unique($all_tags_to_add_db);
     foreach($all_tags_to_add_db as $tag_for_db){
       $tag_for_db_id_query = exec_sql_query($db, "SELECT id FROM tags WHERE :tag_for_db = tag", array(':tag_for_db' => $tag_for_db))->fetchAll();
 
       $tag_for_db_id = $tag_for_db_id_query[0]["id"];
-      var_dump($tag_for_db_id_query);
+
 
 
 
@@ -160,7 +158,7 @@ if ( isset($_POST["add_tags_button"])){
     }
 }
   }
-  echo "Executed sql";
+
 
 
 //DELETE IMAGE SQL UPDATE
@@ -232,7 +230,7 @@ if( isset($_POST["delete_img"]) && $online_user["id"] ==  $image_post["user_id"]
         $records_img_tags = exec_sql_query($db, $sql, $params)->fetchAll();
 
         foreach ($records_img_tags as $record){
-            echo '<div class="tagItem"><li>' . ucfirst(htmlspecialchars($record["tag"])) . '</li>';
+            echo '<div class="tagItem">' . ucfirst(htmlspecialchars($record["tag"]));
 
             //only uploader can delete tags
             if($online_user["id"] ==  $image_post["user_id"]){
@@ -257,7 +255,7 @@ if( isset($_POST["delete_img"]) && $online_user["id"] ==  $image_post["user_id"]
       <legend>Add Tags</legend>
           <ul>
             <li>
-              <label for="add_exist_tag">Add Existing Tags: </label>
+              <label>Add Existing Tags: </label>
               <select name="add_exist_tag[]" multiple>
 
                 <?php
@@ -302,7 +300,7 @@ if( isset($_POST["delete_img"]) && $online_user["id"] ==  $image_post["user_id"]
 
   </div>
 <?php } ?>
-  <button><a href="index.php">Return Home</a></button>
+<a href="index.php">Return Home</a>
     <?php include("includes/footer.php"); ?>
 </body>
 </html>
