@@ -108,8 +108,10 @@ if (isset($_POST["add_img"]) && is_logged_in()){
 
         $result = exec_sql_query($db, $sql, $params);
       }
+      }
 
       //Add entries in image_tags table
+      $all_tags_for_db = array_unique($all_tags_for_db);
       foreach($all_tags_for_db as $tag_for_db){
         $tag_for_db_id_query = exec_sql_query($db, "SELECT id FROM tags WHERE :tag_for_db = tag", array(':tag_for_db' => $tag_for_db))->fetchAll();
 
@@ -134,7 +136,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
   }
 
   }
-}
+
 
 ?>
 
@@ -164,7 +166,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
       <form id="searchForm" action="index.php" method="get">
         <fieldset>
         <legend>Search For or Filter Images</legend>
-        <label for="tag_search">Tags: </label>
+        <label>Tags: </label>
         <select multiple name="tag_search[]">
 
           <?php
@@ -177,7 +179,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
           }
           ?>
         </select>
-        <button name="search_tag_button" type="submit">Filter Images</button>
+        <button name="search_button" type="submit">Filter Images</button>
         </fieldset>
       </form>
     </div>
@@ -190,7 +192,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
     <hr />
 
     <!-- If no tags selected in search form -->
-    <?php if (!(isset($_POST["search_tag_button"]) && isset($_POST["tag_search"]) && $_POST["tag_search"] != "")){ ?>
+    <?php if (!(isset($_POST["search_button"]) && isset($_POST["tag_search"]) && $_POST["tag_search"] != "")){ ?>
     <h2>All Results</h2>
     <div class="galleryDiv">
         <!-- Do sql query to get all images -->
@@ -205,7 +207,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
           // echo'<li><img alt="light pink dress" src="uploads/images/1.jpeg"/></li>';
           foreach($records as $record){
             // echo '<div class="img"><li><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></li></div>';
-            echo '<div class="img"><li><a href="post.php?' . http_build_query( array( "id" => $record["id"] ) ) . '"><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></a></li></div>';
+            echo '<div class="img"><a href="post.php?' . http_build_query( array( "id" => $record["id"] ) ) . '"><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></a></div>';
           }
         }
         ?>
@@ -214,7 +216,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
   <?php } ?>
 
     <!-- If tags selected in search form -->
-    <?php if (isset($_POST["search_tag_button"]) && isset($_POST["tag_search"]) && $_POST["tag_search"] != ""){ ?>
+    <?php if (isset($_POST["search_button"]) && isset($_POST["tag_search"]) && $_POST["tag_search"] != ""){ ?>
     <h2>Search Results</h2>
     <div class="galleryDiv">
         <!-- Do sql query to get images with the tags -->
@@ -302,6 +304,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
 
   </div>
 <?php } ?>
+</div>
   <?php include("includes/footer.php"); ?>
 </body>
 </html>
