@@ -192,7 +192,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
     <hr />
 
     <!-- If no tags selected in search form -->
-    <?php if (!(isset($_POST["search_button"]) && isset($_POST["tag_search"]) && $_POST["tag_search"] != "")){ ?>
+    <?php if (!(isset($_GET["search_button"]) && isset($_GET["tag_search"]) && $_GET["tag_search"] != "")){ ?>
     <h2>All Results</h2>
     <div class="galleryDiv">
         <!-- Do sql query to get all images -->
@@ -216,13 +216,13 @@ if (isset($_POST["add_img"]) && is_logged_in()){
   <?php } ?>
 
     <!-- If tags selected in search form -->
-    <?php if (isset($_POST["search_button"]) && isset($_POST["tag_search"]) && $_POST["tag_search"] != ""){ ?>
+    <?php if (isset($_GET["search_button"]) && isset($_GET["tag_search"]) && $_GET["tag_search"] != ""){ ?>
     <h2>Search Results</h2>
     <div class="galleryDiv">
         <!-- Do sql query to get images with the tags -->
         <?php
         //Filter search tags
-        $search_tags_unfiltered = $_POST["tag_search"];
+        $search_tags_unfiltered = $_GET["tag_search"];
         $search_tags_filtered = array();
         foreach($search_tags_unfiltered as $search_tag_unfilt){
           $search_tags_filtered[] = filter_var($search_tag_unfilt, FILTER_SANITIZE_STRING);
@@ -241,7 +241,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
             // echo'<li><img alt="light pink dress" src="uploads/images/1.jpeg"/></li>';
             foreach($records as $record){
               // echo '<div class="img"><li><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></li></div>';
-              echo '<div class="img"><li><a href="post.php?' . http_build_query( array( "id" => $record["id"] ) ) . '"><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></a></li></div>';
+              echo '<div class="img"><a href="post.php?' . http_build_query( array( "id" => $record["id"] ) ) . '"><img alt="' . htmlspecialchars($record["a_description"]) . '" src="uploads/images/' . htmlspecialchars($record["id"]) . '.' . htmlspecialchars($record["img_ext"]) . '"/></a></div>';
             }
           }
         }
@@ -305,6 +305,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
   </div>
 <?php } ?>
 </div>
+<a href="index.php">Return to All Results</a>
   <?php include("includes/footer.php"); ?>
 </body>
 </html>
