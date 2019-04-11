@@ -264,7 +264,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
             </li>
 
             <li>
-              <label for="exist_tag">Existing Tags: </label>
+              <label>Existing Tags: </label>
               <select name="exist_tag[]" multiple >
 
                 <?php

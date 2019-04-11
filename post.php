@@ -19,32 +19,65 @@ $image_post_id = $image_post["id"];
 
 
 //TO DO: Delete Tags
-//Show all tags for the image
-$sql = "SELECT tags.tag FROM tags INNER JOIN image_tags ON tags.id = image_tags.tag_id WHERE :img_id = image_id;";
-$params = array(
-    ':img_id' => $id
-);
-$records_img_tags = exec_sql_query($db, $sql, $params)->fetchAll();
-// var_dump($records_img_tags);
-foreach($records_img_tags as $record){
-//TO DO: DELETE TAG SQL UPDATES
-// Only uploader can delete tags
+// //Show all tags for the image
+// $sql = "SELECT tags.tag FROM tags INNER JOIN image_tags ON tags.id = image_tags.tag_id WHERE :img_id = image_id;";
+// $params = array(
+//     ':img_id' => $id
+// );
+// $records_img_tags = exec_sql_query($db, $sql, $params)->fetchAll();
+// // var_dump($records_img_tags);
+// foreach($records_img_tags as $record){
+// //TO DO: DELETE TAG SQL UPDATES
+// // Only uploader can delete tags
 
-$record_tag_id = $record["id"];
+// $record_tag_id = $record["id"];
 
-// var_dump(isset($_POST['"'. $button_name . '"']));
-if ( isset($_POST['"delete_' . $record['tag'] . '"']) && $online_user["id"] ==  $image_post["user_id"]){
-    echo "pressed delete tag button block";
-    // $img_tag = $record["tag"];
-    $sql = "DELETE FROM image_tags WHERE (:record_tag_id = image_tags.tag_id and :img_post_id = image_tags.image_id);";
+// // var_dump(isset($_POST['"'. $button_name . '"']));
+// if ( isset($_POST['"delete_' . $record['tag'] . '"']) && $online_user["id"] ==  $image_post["user_id"]){
+//     echo "pressed delete tag button block";
+//     // $img_tag = $record["tag"];
+//     $sql = "DELETE FROM image_tags WHERE (:record_tag_id = image_tags.tag_id and :img_post_id = image_tags.image_id);";
 
-    $params = array(
-        ':record_tag_id' => $record_tag_id,
+//     $params = array(
+//         ':record_tag_id' => $record_tag_id,
+//         ':img_post_id' => $image_post_id
+//     );
+
+//     $result = exec_sql_query($db, $sql, $params);
+// }
+// }
+if ( isset($_POST["del_tags_button"]) && isset($_POST["del_tag"]) && $_POST["del_tag"] != ""){
+    //get filtered and unique list of tags inputted for deletion
+    $del_tags_filtered = filter_new_tag_input("del_tag");
+    $del_tags_filtered = array_unique($del_tags_filtered);
+
+    //all existing tags
+    $all_existing_tags_img = exec_sql_query($db, "SELECT DISTINCT tag FROM tags INNER JOIN image_tags ON image_tags.tag_id = tags.id INNER JOIN images ON image_tags.image_id = images.id WHERE :img_id = images.id", array(':img_id' => $image_post_id))->fetchAll(PDO::FETCH_COLUMN);
+
+    $all_tags_to_del_db = array(); //inputted tags that are actually image's tags
+    foreach($del_tags_filtered as $tag_for_db){
+        if(in_array($tag_for_db, $all_existing_tags_img)){
+          $all_tags_to_del_db[] = $tag_for_db;
+        }
+      }
+
+    //list of ids of tags that are to be deleted
+    foreach($all_tags_to_del_db as $tag_name_to_del){
+        $array_tags_to_del_db_id = exec_sql_query($db, "SELECT DISTINCT tags.id FROM tags WHERE :tag_name_to_del = tags.tag", array(':tag_name_to_del' => $tag_name_to_del))->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    //delete sql
+    foreach($array_tags_to_del_db_id as $tag_id_to_del){
+        $sql = "DELETE FROM image_tags WHERE (:tag_id_to_del = image_tags.tag_id and :img_post_id = image_tags.image_id);";
+
+        $params = array(
+        ':tag_id_to_del' => $tag_id_to_del,
         ':img_post_id' => $image_post_id
-    );
+        );
 
-    $result = exec_sql_query($db, $sql, $params);
-}
+        $result = exec_sql_query($db, $sql, $params);
+    }
+
 }
 
 
@@ -168,16 +201,37 @@ if( isset($_POST["delete_img"]) && $online_user["id"] ==  $image_post["user_id"]
         $records_img_tags = exec_sql_query($db, $sql, $params)->fetchAll();
         foreach ($records_img_tags as $record){
             echo '<div class="tagItem">' . ucfirst(htmlspecialchars($record["tag"]));
-            //only uploader can delete tags
-            if($online_user["id"] ==  $image_post["user_id"]){
-                // echo '<form class="delTagForm" action="post.php?' . http_build_query( array( "id" => $image_post["id"] ) ) . '" method="post"><button name="delete_' . $record['tag'] . '"' .  ' type="submit">Delete</button></form>';
-                $button_name = "delete_" . $record["tag"];
-                echo '<form class="delTagForm" action="post.php?' . http_build_query( array( "id" => $image_post["id"] ) ) . '"  method="post"><button name="' . $button_name .'" type="submit">Delete</button></form>';
-            }
+            // //only uploader can delete tags
+            // if($online_user["id"] ==  $image_post["user_id"]){
+            //     // echo '<form class="delTagForm" action="post.php?' . http_build_query( array( "id" => $image_post["id"] ) ) . '" method="post"><button name="delete_' . $record['tag'] . '"' .  ' type="submit">Delete</button></form>';
+            //     $button_name = "delete_" . $record["tag"];
+            //     echo '<form class="delTagForm" action="post.php?' . http_build_query( array( "id" => $image_post["id"] ) ) . '"  method="post"><button name="' . $button_name .'" type="submit">Delete</button></form>';
+            // }
             echo "</div>";
     }
         ?>
         </div>
+
+        <?php if($online_user["id"] == $image_post["user_id"]){ //only uploader can delete tags
+        ?>
+        <div class="delTagsDiv">
+        <form id="delTagsForm" action="<?php echo 'post.php?' . http_build_query( array( "id" => $image_post["id"] ) ); ?>" method="post">
+      <fieldset>
+      <legend>Delete Tags</legend>
+          <ul>
+            <li>
+              <label for="del_tag">Delete Tags (separated by commas): </label>
+              <input id="del_tag" type="text" name="del_tag"/>
+            </li>
+
+            <li>
+              <button name="del_tags_button" type="submit">Delete Tags</button>
+            </li>
+          </ul>
+      </fieldset>
+    </form>
+        </div>
+        <?php } ?>
 
         <div class="addTagsDiv">
         <form id="addTagsForm" action="<?php echo 'post.php?' . http_build_query( array( "id" => $image_post["id"] ) ); ?>" method="post">
