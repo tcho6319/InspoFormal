@@ -199,3 +199,4 @@ I am having a lot of trouble with adding an image to the gallery. For some reaso
 ## Reflection
 
 [Take this time to reflect on what you learned during this assignment. How have you improved since starting this class? 2-4 sentences]
+I have learned a lot and really challenged myself as a programmer. Since I worked on this a lot over break, I had to debug on my own for the most part. While debugging, I realized how important it is to have organized code and a good plan (db schema, pseduocode) because it allows me to step through my code and understand my logic whenever I revisit it.
