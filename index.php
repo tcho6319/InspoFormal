@@ -35,7 +35,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
 
     //record new add img into db
     $online_user_id = $online_user['id'];
-    //TO DO: MODIFY SQL QUERY TO INCLUDE ADD IMG WITH TAGS
+    //ADD IMG WITH TAGS
     $sql = "INSERT INTO images ('citation', 'user_id', 'img_ext', 'a_description') VALUES (:add_citation, :online_user_id, :add_ext, :add_description);";
 
     $params = array(

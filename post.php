@@ -18,34 +18,7 @@ if (isset($_GET['id'])){
 $image_post_id = $image_post["id"];
 
 
-//TO DO: Delete Tags
-// //Show all tags for the image
-// $sql = "SELECT tags.tag FROM tags INNER JOIN image_tags ON tags.id = image_tags.tag_id WHERE :img_id = image_id;";
-// $params = array(
-//     ':img_id' => $id
-// );
-// $records_img_tags = exec_sql_query($db, $sql, $params)->fetchAll();
-// // var_dump($records_img_tags);
-// foreach($records_img_tags as $record){
-// //TO DO: DELETE TAG SQL UPDATES
-// // Only uploader can delete tags
-
-// $record_tag_id = $record["id"];
-
-// // var_dump(isset($_POST['"'. $button_name . '"']));
-// if ( isset($_POST['"delete_' . $record['tag'] . '"']) && $online_user["id"] ==  $image_post["user_id"]){
-//     echo "pressed delete tag button block";
-//     // $img_tag = $record["tag"];
-//     $sql = "DELETE FROM image_tags WHERE (:record_tag_id = image_tags.tag_id and :img_post_id = image_tags.image_id);";
-
-//     $params = array(
-//         ':record_tag_id' => $record_tag_id,
-//         ':img_post_id' => $image_post_id
-//     );
-
-//     $result = exec_sql_query($db, $sql, $params);
-// }
-// }
+//Delete Tags
 if ( isset($_POST["del_tags_button"]) && isset($_POST["del_tag"]) && $_POST["del_tag"] != ""){
     //get filtered and unique list of tags inputted for deletion
     $del_tags_filtered = filter_new_tag_input("del_tag");
