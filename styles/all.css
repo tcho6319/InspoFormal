@@ -1,4 +1,28 @@
 
+body{
+    font-size: 18px;
+    font-family: "Georgia";
+}
+
+/*header*/
+
+.loginDiv{
+    margin-top: -60px;
+    margin-left: 30px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+h1{
+    background-color: rgb(191, 91, 231);
+    color: white;
+    padding: 30px;
+    padding-bottom: 60px;
+}
+
+h2{
+    color:  rgb(191, 91, 231);
+}
 
 /* Gallery style */
 
@@ -29,6 +53,11 @@ img{
     height: auto;
     margin-left: 150px;
     margin-right: 40px;
+    margin-top: 30px;
+}
+
+.imgSoloDetailsDiv{
+    margin-top: 30px;
 }
 
 .tagItem{
@@ -38,4 +67,79 @@ img{
 
 .tagItem button{
     margin-left: 40px;
+}
+
+
+/* index.php style */
+
+#searchForm{
+    margin-top: 30px;
+}
+
+#addImgForm li{
+    list-style: none;
+    margin-left: -40px;
+    padding: 4px;
+}
+
+
+legend{
+    font-weight:bold;
+}
+
+.returnButtonDiv{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 40px;
+}
+
+.returnButtonDiv a:link{
+    /* background-color:rgb(191, 91, 231); */
+    border-color: rgb(191, 91, 231);
+    border: solid;
+    padding: 5px;
+    margin-top: 50px;
+    text-decoration: none;
+}
+
+.returnButtonDiv a:hover{
+    text-decoration: underline;
+}
+
+#addImgForm{
+    margin-bottom: 30px;
+}
+
+#searchForm button{
+    background-color: rgb(191, 91, 231);
+    color: white;
+}
+
+#addImgForm button{
+    background-color: rgb(191, 91, 231);
+    color: white;
+}
+
+/* post.php */
+#addTagsForm li{
+    list-style: none;
+    margin-left: -40px;
+}
+
+#addTagsForm button{
+    background-color: rgb(191, 91, 231);
+    color: white;
+}
+
+#delImgForm button{
+    background-color: rgb(191, 91, 231);
+    color: white;
+}
+
+/*footer*/
+footer{
+    background-color: rgb(191, 91, 231);
+    text-align: center;
+    padding: 4px;
+    color: white;
 }

@@ -216,4 +216,30 @@ if (isset($online_user) && isset($_POST['logout'])){
 }
 
 
+
+//HELPER FUNCTIONS
+function filter_exist_tag_input($button_name){
+  $add_exist_tags_unfiltered = $_POST[$button_name];
+  $add_exist_tags_filtered = array();
+  foreach($add_exist_tags_unfiltered as $add_exist_tag_unfilt){
+    $add_exist_tags_filtered[] = filter_var($add_exist_tag_unfilt, FILTER_SANITIZE_STRING);
+  }
+
+  return $add_exist_tags_filtered;
+}
+
+function filter_new_tag_input($button_name){
+  $add_new_tag = filter_input(INPUT_POST, $button_name, FILTER_SANITIZE_STRING);
+  //Separate string input by commas to create new_tags array
+  $add_new_tags_filtered_split = explode(",", $add_new_tag);
+  $add_new_tags_filtered = array();
+  foreach ($add_new_tags_filtered_split as $add_new_tag_filtered){
+    $add_new_tag_filtered = trim($add_new_tag_filtered);
+    $add_new_tag_filtered = strtolower($add_new_tag_filtered);
+    $add_new_tags_filtered[] = $add_new_tag_filtered;
+  }
+
+  return $add_new_tags_filtered;
+}
+
 ?>

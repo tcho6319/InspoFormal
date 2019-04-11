@@ -16,25 +16,14 @@ if (isset($_POST["add_img"]) && is_logged_in()){
 
   //FILTER EXISTING TAGS
   if (isset($_POST["exist_tag"]) && $_POST["exist_tag"] != ""){
-    $add_exist_tags_unfiltered = $_POST["exist_tag"];
-    $add_exist_tags_filtered = array();
-    foreach($add_exist_tags_unfiltered as $add_exist_tag_unfilt){
-      $add_exist_tags_filtered[] = filter_var($add_exist_tag_unfilt, FILTER_SANITIZE_STRING);
-    }
+
+    $add_exist_tags_filtered = filter_exist_tag_input("exist_tag");
   }
 
 
   //FILTER NEW TAG
   if (isset($_POST["new_tag"])&& $_POST["new_tag"] != "") {
-    $add_new_tag = filter_input(INPUT_POST, "new_tag", FILTER_SANITIZE_STRING);
-    //Separate string input by commas to create new_tags array
-    $add_new_tags_filtered_split = explode(",", $add_new_tag);
-    $add_new_tags_filtered = array();
-    foreach ($add_new_tags_filtered_split as $add_new_tag_filtered){
-      $add_new_tag_filtered = trim($add_new_tag_filtered);
-      $add_new_tag_filtered = strtolower($add_new_tag_filtered);
-      $add_new_tags_filtered[] = $add_new_tag_filtered;
-    }
+    $add_new_tags_filtered = filter_new_tag_input("new_tag");
   }
 
   //if add is successful -> record new img in db and store img in uploads directory
@@ -187,6 +176,7 @@ if (isset($_POST["add_img"]) && is_logged_in()){
     <div id="aboutDiv">
       <h2>About</h2>
           <p><strong>Welcome to InspoFormal!</strong> Our mission is to provide a platform for users to share their styles and inspirations for their special formal events.</p>
+          <p><strong>Click on an image in our gallery to find out more information about it!</strong></p>
     </div>
 
     <hr />
@@ -247,9 +237,13 @@ if (isset($_POST["add_img"]) && is_logged_in()){
         }
         ?>
     </div>
-    <?php } ?>
-<hr />
 
+    <?php } ?>
+
+<div class="returnButtonDiv">
+<a href="index.php">Return to All Results</a>
+</div>
+<hr />
   <!-- If user logged in -->
   <?php if (is_logged_in()){ ?>
   <div id="addImgDiv">
@@ -305,7 +299,6 @@ if (isset($_POST["add_img"]) && is_logged_in()){
   </div>
 <?php } ?>
 </div>
-<a href="index.php">Return to All Results</a>
   <?php include("includes/footer.php"); ?>
 </body>
 </html>
