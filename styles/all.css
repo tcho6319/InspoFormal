@@ -121,12 +121,12 @@ legend{
 }
 
 /* post.php */
-#addTagsForm li{
+#addTagsForm li, #delTagsForm li{
     list-style: none;
     margin-left: -40px;
 }
 
-#addTagsForm button{
+#addTagsForm button, #delTagsForm button{
     background-color: rgb(191, 91, 231);
     color: white;
 }
@@ -135,6 +135,12 @@ legend{
     background-color: rgb(191, 91, 231);
     color: white;
 }
+
+.delTagsDiv{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
 
 /*footer*/
 footer{
