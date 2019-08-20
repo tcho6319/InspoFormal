@@ -1,13 +1,10 @@
-# Project 3
+# InspoFormal
 
-See the course website for Project 3's requirements: [Project 3](https://github.coecis.cornell.edu/info2300-sp2019/info2300-sp2019-website/blob/master/assignments/project-3/project-3.md) ([PDF](https://github.coecis.cornell.edu/info2300-sp2019/info2300-sp2019-website/blob/master/assignments/project-3/project-3.pdf)).
+This was a website created for a project in my Intermediate Web Design & Programming course. The website is similar to Pinterest where users can view and search images of formal events, including weddings and proms, by tags. Users can additionally upload images and create new tags. Basic login/logout is also implemented.
 
-# Submission Instructions
+Try
+-- Username: lesKnope, Password: waffles
+-- Username: tommyH, Password: treatYOSELF
 
-See the respective **submit-_milestone_.md** file for each submission.
+to access different features of the site.
 
-| Submission  | Instructions                       |
-| ----------- | ---------------------------------- |
-| Milestone 1 | [submit-m1.md](submit-m1.md)       |
-| Milestone 2 | [submit-m2.md](submit-m2.md)       |
-| Final       | [submit-FINAL.md](submit-FINAL.md) |
