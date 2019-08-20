@@ -160,6 +160,7 @@ if( isset($_POST["delete_img"]) && $online_user["id"] ==  $image_post["user_id"]
   <div class="mainImgSoloDiv">
     <div class="imgSoloDiv">
         <?php echo '<img alt="' . htmlspecialchars($image_post["a_description"]) . '" src="uploads/images/' . htmlspecialchars($image_post["id"]) . '.' . htmlspecialchars($image_post["img_ext"]) . '"/>' ?>
+        <?php echo "<p>" . htmlspecialchars($image_post["citation"]) . "</p>"?>
     </div>
 
     <div class = "imgSoloDetailsDiv">
